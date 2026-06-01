@@ -13,4 +13,4 @@ WritePolicyL2=1
 AllocatePolicyL2=1
 MemoryLatency=100
 TraceType=5
-TraceFile=data/trace_rw_mixed.txt
+TraceFile=data/test.txt
