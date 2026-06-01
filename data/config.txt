@@ -1,0 +1,16 @@
+# Cache Simulator Configuration
+L1CacheSize=1024
+L1BlockSize=64
+L1Associativity=2
+L1Latency=1
+WritePolicyL1=1
+AllocatePolicyL1=1
+L2CacheSize=8192
+L2BlockSize=64
+L2Associativity=4
+L2Latency=10
+WritePolicyL2=1
+AllocatePolicyL2=1
+MemoryLatency=100
+TraceType=5
+TraceFile=data/trace_rw_mixed.txt
