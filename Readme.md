@@ -59,34 +59,6 @@ The simulator supports configurable cache parameters such as cache size, block s
 
 ---
 
-## Project Structure
-
-```text
-CacheSimulator/
-│
-├── data/
-│   ├── config.txt
-│   ├── trace_sequential.txt
-│   ├── trace_random.txt
-│   ├── trace_rw_mixed.txt
-│   └── ...
-│
-├── src/
-│   ├── main.cpp
-│   ├── CacheLevel.cpp
-│   ├── CacheLevel.h
-│   ├── MultiLevelCache.cpp
-│   ├── MultiLevelCache.h
-│   ├── MemoryTrace.cpp
-│   └── MemoryTrace.h
-│
-├── CMakeLists.txt
-├── README.md
-└── cache_results.csv
-```
-
----
-
 ## Cache Architecture
 
 ```text
@@ -315,8 +287,8 @@ TraceFile=data/trace_rw_mixed.txt
 ### Clone Repository
 
 ```bash
-git clone <repository-url>
-cd CacheSimulator
+git clone https://github.com/SharmaAyush1009/Cache-simulator
+cd <Project_dir>
 ```
 
 ### Create Build Directory
@@ -343,7 +315,7 @@ cmake --build .
 Windows:
 
 ```bash
-.\Debug\cache_simulator.exe
+.\Debug\cache_simulator.exe(or wherever is executable)
 ```
 
 Linux/macOS:
