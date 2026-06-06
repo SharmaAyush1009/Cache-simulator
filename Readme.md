@@ -1,4 +1,4 @@
-# Trace-Driven Multi-Level Cache Simulator
+# Multi-Level Cache Simulator
 
 ## Overview
 
