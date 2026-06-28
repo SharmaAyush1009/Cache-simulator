@@ -12,7 +12,7 @@ int MultiLevelCache::access(int address, bool isWrite) {
 
     if (hitL1) {
         // If write-through, forward write to L2/memory (handled here)
-        if (isWrite) {
+        if (isWrite && L1.getWritePolicy() == WritePolicy::WriteThrough) {
             // For WT in L1, we must write to lower level.
             // Try to write into L2 (treat as write, may be WT/WB depending on L2 policy)
             auto [hitL2onWT, evictDirtyL2onWT] = L2.access(address, true);
@@ -20,6 +20,7 @@ int MultiLevelCache::access(int address, bool isWrite) {
             writesToLower++;
             if (!hitL2onWT) {
                 // Miss in L2 on WT; for correctness, memory is updated too
+                L2.insertOnFill(address, false);
                 cycles += memoryLatency;
                 writesToMemory++;
             }
@@ -53,6 +54,9 @@ int MultiLevelCache::access(int address, bool isWrite) {
 
             cycles += L2.getLatency();
             writesToLower++;
+            if (!h2) {
+                L2.insertOnFill(evictedAddress, true); 
+            }
 
             if (e2) {
                 cycles += memoryLatency;
@@ -94,7 +98,9 @@ int MultiLevelCache::access(int address, bool isWrite) {
 
         cycles += L2.getLatency();
         writesToLower++;
-
+        if (!h2) {
+                L2.insertOnFill(evictedAddress, true); 
+        }
         if(e2){
             cycles += memoryLatency;
             writesToMemory++;

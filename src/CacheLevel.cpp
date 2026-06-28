@@ -35,39 +35,13 @@ std::pair<bool,bool> CacheLevel::access(int address, bool isWrite) {
         return {true, false};
     }
 
-    // Miss path
     if (isWrite) writeMisses++; else readMisses++;
 
-    // For writes, check allocation policy
     if (isWrite && allocatePolicy == AllocatePolicy::NoWriteAllocate) {
-        // Do not bring into cache; controller will forward to lower level
         return {false, false};
     }
 
-    // Bring block into cache (read miss, or write miss with write-allocate)
-    // Evict if full
-    bool evictedDirty = false;
-    if ((int)listRef.size() == associativity) {
-        int lruTag = listRef.back();
-        listRef.pop_back();
-        auto mIt = metaRef.find(lruTag);
-        if (mIt != metaRef.end()) {
-            if (mIt->second.dirty && writePolicy == WritePolicy::WriteBack) {
-                evictedDirty = true;
-                writeBacksToLower++; // count write-back to lower on eviction
-            }
-            metaRef.erase(mIt);
-        }
-    }
-
-    // Insert new block as MRU
-    listRef.push_front(tag);
-    LineMeta lm;
-    lm.it = listRef.begin();
-    lm.dirty = (isWrite && writePolicy == WritePolicy::WriteBack); // write-allocate + WB
-    metaRef[tag] = lm;
-
-    return {false, evictedDirty};
+    return {false, false};
 }
 
 EvictionInfo CacheLevel::insertOnFill(int address, bool markDirty){
