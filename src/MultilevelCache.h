@@ -17,12 +17,11 @@ private:
     // write-through lower writes and write-back evictions counts
     long long writesToLower = 0;
     long long writesToMemory = 0;
-    bool enablePrefetch = true;
+    bool enablePrefetch = false;
     void prefetchNextLine(int address);
-
+    
 public:
-    MultiLevelCache(const CacheLevel &l1, const CacheLevel &l2, int memLatency)
-        : L1(l1), L2(l2), memoryLatency(memLatency) {}
+    MultiLevelCache(const CacheLevel &l1, const CacheLevel &l2, int memLatency) : L1(l1), L2(l2), memoryLatency(memLatency) {}
 
     // Access with read/write flag
     int access(int address, bool isWrite);
@@ -35,6 +34,8 @@ public:
     long long getMissesToMemory() const { return Misses; }
     void printStats();
     void exportToCSV(const std::string& filename, const std::string& configName = "Test");
+    void setPrefetch(bool val) { enablePrefetch = val; }
+    bool getPrefetch() const { return enablePrefetch; }
 
 };
 

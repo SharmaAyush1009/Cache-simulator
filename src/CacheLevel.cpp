@@ -70,8 +70,7 @@ std::pair<bool,bool> CacheLevel::access(int address, bool isWrite) {
     return {false, evictedDirty};
 }
 
-EvictionInfo CacheLevel::insertOnFill(int address, bool markDirty)
-{
+EvictionInfo CacheLevel::insertOnFill(int address, bool markDirty){
     int blockNumber = address / blockSize;
     int setIndex = blockNumber % numSets;
     int tag = blockNumber / numSets;
@@ -81,28 +80,22 @@ EvictionInfo CacheLevel::insertOnFill(int address, bool markDirty)
 
     EvictionInfo ev;
 
-    if ((int)listRef.size() == associativity)
-    {
+    if ((int)listRef.size() == associativity){
         int lruTag = listRef.back();
         listRef.pop_back();
 
         auto mIt = metaRef.find(lruTag);
 
-        if (mIt != metaRef.end())
-        {
+        if (mIt != metaRef.end()){
             ev.valid = true;
 
-            ev.blockNumber =
-                lruTag * numSets + setIndex;
+            ev.blockNumber = lruTag * numSets + setIndex;
 
             ev.dirty = mIt->second.dirty;
 
-            if (ev.dirty &&
-                writePolicy == WritePolicy::WriteBack)
-            {
+            if (ev.dirty && writePolicy == WritePolicy::WriteBack){
                 writeBacksToLower++;
             }
-
             metaRef.erase(mIt);
         }
     }
@@ -111,9 +104,7 @@ EvictionInfo CacheLevel::insertOnFill(int address, bool markDirty)
 
     LineMeta lm;
     lm.it = listRef.begin();
-    lm.dirty =
-        markDirty &&
-        (writePolicy == WritePolicy::WriteBack);
+    lm.dirty = markDirty && (writePolicy == WritePolicy::WriteBack);
 
     metaRef[tag] = lm;
 

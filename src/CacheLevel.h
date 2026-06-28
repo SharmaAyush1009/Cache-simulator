@@ -38,8 +38,7 @@ private:
     long long writeBacksToLower = 0; // number of dirty evictions
 
 public:
-    CacheLevel(int cSize, int bSize, int assoc, int latencyCycles,
-               WritePolicy wpol, AllocatePolicy apol);
+    CacheLevel(int cSize, int bSize, int assoc, int latencyCycles, WritePolicy wpol, AllocatePolicy apol);
 
     std::pair<bool,bool> access(int address, bool isWrite);
 
